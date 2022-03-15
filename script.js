@@ -8,10 +8,11 @@ const pauseBtn = document.getElementById("pause");
 const gameOver = document.getElementById("game-over");
 const pauseOver = document.getElementById("pause-over");
 
-// Создается двумерный массив для инструкции отображения клеток на экране 
-// 0 - пустая клетка
-// 1 - заполненная клетка движущегося элемента
-// 2 - заполненная клетка неподвижного элемента
+// A two-dimensional array is created for the instruction to display cells on the screen
+// 0 - empty cell
+// 1 - filled cell of the moving element
+// 2 - filled cell of a fixed element
+
 let playfield = [
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
@@ -110,14 +111,14 @@ let nextFigure = getNewFigure();
 
 function draw() {
   let mainInnerHTML = "";
-  // Для перебора элементов двумерных массивов обычно используется два цикла for первый цикл перебирает ряды
-  // А другой перебирает элементы внутри каждого ряда
+  // To iterate over the elements of two-dimensional arrays, two for loops are usually used, the first loop iterates over the rows
+  // And the other iterates over the elements within each row
   // lenght 
   for (let y = 0; y < playfield.length; y++) {
     for (let x = 0; x < playfield[y].length; x++) {
-      // Если элемент внутри массива равен 1 до значит данная клетка должна быть заполненна
-      // Иначе будет отображаться пустая клетка
-      // lenght обозначает длинну массива
+      // If the element inside the array is 1 to then this cell must be filled
+      // Otherwise, an empty cell will be displayed
+      // length denotes the length of the array
       if (playfield[y][x] == 1) {
         mainInnerHTML += '<div class="cell movingCell"></div>';
       } else if (playfield[y][x] == 2) {
@@ -127,7 +128,7 @@ function draw() {
       }
     }
   }
-  // записываешь полученные блоки в HTML 
+  // write the received blocks in HTML
   main.innerHTML = mainInnerHTML;
 }
 
@@ -156,7 +157,7 @@ function removePrevActiveFigure() {
   }
 }
 
-//функция для создания фигуры, внутри массива activeFigure.shape отккуда потом фигура переноситься на поле
+//a function for creating a figure, inside the active Figure.shape array, from where the figure is then transferred to the field
 function updateActiveFigure(){
   removePrevActiveFigure();
   for (let y = 0; y < activeFigure.shape.length; y++) {
@@ -172,7 +173,7 @@ function updateActiveFigure(){
 function rotateFigure() {
 
   const prevFigureState = activeFigure.shape;
-  //строчка кода взята из интернета, ее задание превращать рядки массива активной фигуры в столбцы, то есть повернуть фигуру на 90 градусов по часовой стрелке
+  //the line of code is taken from the Internet, its task is to turn the rows of the array of the active figure into columns, that is, rotate the figure 90 degrees clockwise
   activeFigure.shape = activeFigure.shape[0].map((val, index) =>
     activeFigure.shape.map((row) => row[index]).reverse()
   );
@@ -182,7 +183,7 @@ function rotateFigure() {
   }
 }
 
-// функция на проверку столкновений фигуры с границами поля или с другими фигурами
+// function to check for collisions of a shape with the borders of the field or with other shapes
 function hasCollisions() {
   for (let y = 0; y < activeFigure.shape.length; y++) {
     for (let x = 0; x < activeFigure.shape[y].length; x++) {
@@ -198,7 +199,7 @@ function hasCollisions() {
   return false;
 }
 
-// проверяет есть ли на поле заполненные строки, если есть она удаляется и на поле добавляется новая, пустая строка массива
+// checks if there are filled lines on the field, if there are, it is deleted and a new, empty array line is added to the field
 function checkLines() {
   let canRemoveLine = true,
     filledLines = 0;
@@ -315,9 +316,8 @@ function reset() {
   gameOver.style.display = "block";
 }
 
-//document - выбирает весь документ и воздействует на него
-//onkeydown - устанавливает событие при нажатии клавиши
-// в данный момент передвижение фигуры осуществляется за счет изменения координат на поле а не за счет поочередного изменения 1 и 0 в массиве игрового поля
+
+// at the moment, the movement of the figure is carried out by changing the coordinates on the field and not by alternately changing 1 and 0 in the array of the playing field
 document.onkeydown = function (e) {
   if (!isPaused) {
     if (e.keyCode == 65) {
@@ -379,7 +379,7 @@ levelElem.innerHTML = currentLevel;
 
 draw();
 
-//функция для того чтобы постоянно запускать функцию движения блока, пока тот не упреться в дно
+//a function to constantly run the block movement function until it hits the bottom
 function startGame() {
   moveFigureDown();
   if (!isPaused) {
